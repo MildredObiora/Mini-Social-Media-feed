@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Form
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Optional
+from fastapi import FastAPI , File ,UploadFile ,Form
+
 
 my_app = FastAPI()
 
@@ -45,3 +47,18 @@ class CreatePost(BaseModel):
     content: str
     image_filename: Optional[str] = None
     likes: int = 0
+
+post_db=[{}]
+
+
+
+@my_app.post("/post/")
+async def submit_post(
+   
+    username: str = Form(),
+    title: str = Form(),
+    content: str = Form(),
+    upload_image: Optional[UploadFile] = File(None)
+):
+    post_id=len(post_db) + 1
+  
