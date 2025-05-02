@@ -14,10 +14,10 @@ Think of it as “Instagram Lite” for demo purposes — perfect for sharpening
 | Feature | Route sketch | Status |
 |---------|--------------|--------|
 | **Sign up / Sign in** | `POST /auth/register` & `POST /auth/login` | ✅ Done |
-| **Create a post (text + file)** | `POST /posts/` (multipart) | 🔄 In progress|
-| **See your feed** | `GET /feed` (`?user_id=` optional) | 🔄 In progress|
-| **Like / unlike** | `POST /posts/{id}/like` & `DELETE /posts/{id}/like` | 🔄 In progress|
-| **Like counters** | Auto‑updated on every like/unlike | 🔄 In progress|
+| **Create a post (text + file)** | `POST /posts/` (multipart) | ✅ Done|
+| **See your feed** | `GET /feed` (`?user_id=` optional) | ✅ Done|
+| **Like / unlike** | `POST /posts/{id}/like` & `DELETE /posts/{id}/like` | ✅ Done|
+| **Like counters** | Auto‑updated on every like/unlike | ✅ Done|
 
 > **Tech stack:** FastAPI • SQLModel (async) • PostgreSQL • JWT Auth • S3 / local file storage • Docker
 
