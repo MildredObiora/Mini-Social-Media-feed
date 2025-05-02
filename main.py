@@ -50,8 +50,6 @@ class CreatePost(BaseModel):
 
 post_db=[{}]
 
-
-
 @my_app.post("/post/")
 async def submit_post(
    
@@ -61,4 +59,13 @@ async def submit_post(
     upload_image: Optional[UploadFile] = File(None)
 ):
     post_id=len(post_db) + 1
-  
+    
+    post_data = CreatePost(
+        id=post_id,
+        username=username,
+        title=title,
+        content=content,
+    )
+    post_db.append(post_data)
+    return {"message": "Post submitted successfully", "post": post_data.dict()}
+
