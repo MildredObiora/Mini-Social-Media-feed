@@ -67,7 +67,7 @@ class CreatePost(BaseModel):
     likes: int = 0
 
 
-@my_app.get("/user{username}/posts")
+@my_app.get("/user/{username}/posts")
 async def get_user_post(username: str):
     if username not in new_user_db:
         raise HTTPException(status_code=404, detail="Username not found")
@@ -84,10 +84,6 @@ async def submit_post(
     upload_image: Optional[UploadFile] = File(None)
 ):
     post_id=len(post_db) + 1
-
-@my_app.get("/post/")
-async def list_all_posts():
-    return {"posts": [post.dict() for post in post_db]}
     
     post_data = CreatePost(
         id=post_id,
@@ -97,4 +93,8 @@ async def list_all_posts():
     )
     post_db.append(post_data)
     return {"message": "Post submitted successfully", "post": post_data.dict()}
+
+@my_app.get("/post/")
+async def list_all_posts():
+    return {"posts": [post.dict() for post in post_db]}
 
