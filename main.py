@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Form, HTTPException
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Optional
+from fastapi import FastAPI , File ,UploadFile ,Form
+
 
 my_app = FastAPI()
 
@@ -47,8 +49,30 @@ class CreatePost(BaseModel):
     image_filename: Optional[str] = None
     likes: int = 0
 
+
 @my_app.get("/user{username}/posts")
 async def get_user_post(username: str):
     if username not in new_user_db:
         raise HTTPException(status_code=404, detail="Username not found")
     return [post for post in posts if post.username == username]
+
+post_db=[{}]
+
+@my_app.post("/post/")
+async def submit_post(
+   
+    username: str = Form(),
+    title: str = Form(),
+    content: str = Form(),
+    upload_image: Optional[UploadFile] = File(None)
+):
+    post_id=len(post_db) + 1
+    
+    post_data = CreatePost(
+        id=post_id,
+        username=username,
+        title=title,
+        content=content,
+    )
+    post_db.append(post_data)
+    return {"message": "Post submitted successfully", "post": post_data.dict()}
