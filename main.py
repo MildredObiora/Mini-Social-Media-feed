@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Form
 from pydantic import BaseModel, EmailStr
-from typing import Annotated
+from typing import Annotated, Optional
 
 my_app = FastAPI()
 
@@ -23,3 +23,13 @@ async def returning_user_login(
     password: Annotated[str, Form()],
 ):
     return {"message": f"Hi {username}, welcome back!"}
+
+posts = {}
+
+class CreatePost(BaseModel):
+    id: int
+    username: str
+    title: str
+    content: str
+    image_filename: Optional[str] = None
+    likes: int = 0
