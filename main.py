@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Form, HTTPException
+from fastapi import FastAPI, Form, HTTPException, status
 from pydantic import BaseModel, EmailStr
 from typing import Annotated, Optional
 from fastapi import FastAPI , File ,UploadFile ,Form
-
 
 my_app = FastAPI()
 
@@ -38,6 +37,24 @@ async def returning_user_login(
 ):
     return {"message": f"Hi {username}, welcome back!"}
 
+# To unlike a post
+@my_app.post("/posts/{post_id}/unlike/")
+def unlike_post(post_id: int, username:str):
+    for post in posts:
+        if post["id"] == post_id:
+            if (username, post_id) not in likes:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail = "You have not liked this post yet"
+                )
+            likes.remove((username, post_id))
+            post["likes"] = max(0, post["likes"] - 1)
+            return {"Message": "Post unliked!", "likes": post["likes"]}
+    raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail = "Post not found"
+                )
+    
 posts = {}
 
 
@@ -80,3 +97,4 @@ async def list_all_posts():
     )
     post_db.append(post_data)
     return {"message": "Post submitted successfully", "post": post_data.dict()}
+
