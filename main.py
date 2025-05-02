@@ -61,4 +61,9 @@ async def submit_post(
     upload_image: Optional[UploadFile] = File(None)
 ):
     post_id=len(post_db) + 1
+
+@my_app.get("/post/")
+async def list_all_posts():
+    return {"posts": [post.dict() for post in post_db]}
+
   
